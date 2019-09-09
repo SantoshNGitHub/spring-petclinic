@@ -73,7 +73,7 @@ node {
       }catch(Exception e) {
           throw new Exception("Deployment using docker compose failed.")
       }
-      
+         
      }   
 
      //Deploy using ansible in 3rd vm
