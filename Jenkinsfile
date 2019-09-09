@@ -89,8 +89,6 @@ node {
 
      stage('Notify') {    
          mailBody = 'The application is deployed.'
-
-   def mailSubject = 'Jenkins CI-CD Pipeline Status'
           sendMailNotification(mailBody, mailSubject) 
     }  
 
