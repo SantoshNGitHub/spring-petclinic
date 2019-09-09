@@ -1,0 +1,7 @@
+version: "3"
+services:
+  web:
+    image: santosh99y/petclinic:v1
+    ports:  
+      - "8189:8189"  
+       

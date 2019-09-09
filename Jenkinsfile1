@@ -1,0 +1,116 @@
+node {
+   def mvnHome = tool 'm3.6.1'
+   def server = Artifactory.server 'artifactory'
+   try {
+   //Checkout repo from git.  
+   stage('Checkout') {   
+      try {
+         cleanWs()
+         git branch: 'master1',  url: 'https://github.com/SantoshNGitHub/spring-petclinic.git'
+      }catch(Exception e) {
+         throw new Exception('unable to checkout repo.')  
+      } 
+                
+   }
+
+   //Prepare jar. 
+   // stage('Build') {
+      
+   //    withEnv(["MVN_HOME=$mvnHome"]) {
+   //       if (isUnix()) {
+   //          sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean package'
+   //       } else {
+   //          bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
+   //       }
+   //    } 
+   // }
+   
+   // //Do Sonar scanning
+   //  stage('Sonar-Analysis') { 
+   //    withSonarQubeEnv('sonar-4') {
+   //        withEnv(["MVN_HOME=$mvnHome"]) {
+   //        if (isUnix()) {
+   //           sh '"$MVN_HOME/bin/mvn" sonar:sonar'
+   //        } else {
+   //           bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
+   //        }
+   //     }  
+   //     }
+   //  }
+    
+   //  //Sonar quality gate for 70% coverage
+   //  stage("Sonar Quality Gate"){
+   //       timeout(time: 1, unit: 'HOURS') { 
+   //           def qg = waitForQualityGate() 
+   //           if (qg.status != 'OK') {
+   //               currentBuild.status='FAILURE'
+   //               error "Did not pass the quality gate: ${qg.status}"
+   //          }
+   //       }
+   //   }
+   
+   // //Upload jar to jfrog artifactory
+   // stage('Artifact upload using Artifactory') {  
+   //      def uploadSpec = """{
+   //    "files": [
+   //         {
+   //           "pattern": "/var/lib/jenkins/workspace/basic-pipeline2/target/*.jar",
+   //           "target": "example-repo-local/"
+   //        }
+   //     ]
+   //    }"""
+   //       server.upload(uploadSpec)
+   //  }    
+
+   // //Download from jfrog artifactory
+   //  stage('Artifact download using Artifactory'){ 
+   //       def downloadSpec="""
+	//  	{	    
+	//  		"files":[ 
+   //           {
+   //              "pattern":"example-repo-local/spring-petclinic-2.1.0.BUILD-SNAPSHOT.jar", 
+   //              "target":"/opt/petclinic/"
+   //           } 
+   //        ] 
+	// 	}""" 
+   //       server.download(downloadSpec)
+   //   }  
+   
+   // //Prepare docker image and push to docker hub.
+   // stage('Docker Build and Push to Docker hub'){    
+   // // docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+   //    //   def customImage = docker.build("santosh99y/petclinic:v1")
+        
+   //    //  customImage.push()
+        
+   // // }  
+   // }  
+  
+   // //Pull image from docker hub and deploy 
+   //  stage('Docker Pull and Deploy'){    
+   //   // input 'Proceed to deploy?'
+   //  // sh 'docker-compose down; docker-compose up -d --build'   
+      
+   //  }   
+
+   //  //Deploy using ansible in 3rd vm
+   //  stage('Deploy Using Ansible'){      
+   //     input 'Proceed to deploy?'
+   //    sh 'sudo ansible-playbook /home/devopsinfra/deploy-petclinic.yaml'   
+    
+   //  }
+
+    stage('Notify') {
+      
+          emailext body: 'The application is deployed.', recipientProviders: [[$class: 'DevelopersRecipientProvider'], 
+          [$class: 'RequesterRecipientProvider']], subject: 'Jenkins CI-CD Pipeline Status'
+       
+    }  
+   }catch(Exception e) {  
+      echo e.getMessage()
+      currentBuild.result = "FAILURE" 
+      emailext body: 'The Jenkins build failed.', recipientProviders: [[$class: 'DevelopersRecipientProvider'], 
+          [$class: 'RequesterRecipientProvider']], subject: 'Jenkins CI-CD Pipeline Status'  
+   }  
+   
+}     
