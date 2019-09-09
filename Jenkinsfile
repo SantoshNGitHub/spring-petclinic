@@ -18,7 +18,7 @@ node {
    stage('Checkout') {   
      
      try {
-         // cleanWs()
+        cleanWs()
         gitCheckout(
         branch: gitBranch,
         url: gitURL  
