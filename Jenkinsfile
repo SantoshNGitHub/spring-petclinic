@@ -58,7 +58,7 @@ node {
     //Prepare docker image and push to docker hub.
     stage('Docker Build and Push to Docker hub'){ 
         try {
-            createAndPushDockerImage(registryURL, dockerCredentialId, dockerImageAndTag)
+           // createAndPushDockerImage(registryURL, dockerCredentialId, dockerImageAndTag)
         }catch(Exception e) {
             throw new Exception("Unable to build docker image.")
         }  
@@ -69,7 +69,7 @@ node {
      stage('Docker Pull and Deploy'){    
       input 'Proceed to deploy?'
       try {
-          deployUsingDockerCompose()
+         // deployUsingDockerCompose()
       }catch(Exception e) {
           throw new Exception("Deployment using docker compose failed.")
       }
