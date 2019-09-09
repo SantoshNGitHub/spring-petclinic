@@ -76,7 +76,7 @@ node {
          
      }   
 
-     //Deploy using ansible in 3rd vm
+     //Deploy using ansible in 3rd vm   
      stage('Deploy Using Ansible'){      
         input 'Proceed to deploy?'
          try {
