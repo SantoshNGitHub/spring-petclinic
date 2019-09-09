@@ -81,7 +81,7 @@ node {
            ] 
 	 	}""" 
           server.download(downloadSpec)
-      }  
+      }    
 
 
     //Prepare docker image and push to docker hub.
