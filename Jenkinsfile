@@ -89,13 +89,15 @@ node {
 
      stage('Notify') {    
          mailBody = 'The application is deployed.'
-          sendMailNotification(mailBody, mailSubject) 
+         echo 'Sending deployment success mail...'
+        sendMailNotification(mailBody, mailSubject) 
     }  
 
    }catch(Exception e) {
        echo e.getMessage()
        currentBuild.result = "FAILURE" 
        mailBody = 'The jenkins build failed'
+       echo 'Sending build failed mail...'
        sendMailNotification(mailBody, mailSubject) 
 
    } 
