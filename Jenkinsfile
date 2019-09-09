@@ -55,6 +55,35 @@ node {
        // }
       }  
 
+
+    //Upload jar to jfrog artifactory
+    stage('Artifact upload using Artifactory') {  
+        def uploadSpec = """{
+       "files": [
+            {
+              "pattern": "/var/lib/jenkins/workspace/basic-pipeline2/target/*.jar",
+              "target": "example-repo-local/"
+           }
+        ]
+       }"""
+          server.upload(uploadSpec)
+     }    
+
+    //Download from jfrog artifactory
+     stage('Artifact download using Artifactory'){ 
+          def downloadSpec="""
+	  	{	    
+	  		"files":[ 
+              {
+                 "pattern":"example-repo-local/spring-petclinic-2.1.0.BUILD-SNAPSHOT.jar", 
+                 "target":"/opt/petclinic/"
+              } 
+           ] 
+	 	}""" 
+          server.download(downloadSpec)
+      }  
+
+
     //Prepare docker image and push to docker hub.
     stage('Docker Build and Push to Docker hub'){ 
         try {
@@ -80,7 +109,7 @@ node {
      stage('Deploy Using Ansible'){      
         input 'Proceed to deploy?'
          try {
-             deployUsingAnsible()
+           //  deployUsingAnsible()
         }catch(Exception e) {
           throw new Exception("Deployment using docker compose failed.")
         }      
