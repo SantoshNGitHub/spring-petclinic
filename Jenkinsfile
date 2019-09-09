@@ -1,7 +1,7 @@
 @Library('shared-lib@master') _
 
 node {
-   def gitBranch = 'master'
+   def gitBranch = 'master'   
    def gitURL = 'https://github.com/spring-projects/spring-petclinic.git'
    def mvnHome = tool 'm3.6.1'
    def sonarPlugin = 'sonar-4'
