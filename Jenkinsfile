@@ -19,10 +19,10 @@ node {
      
      try {
        // cleanWs()
-       // gitCheckout(
-       // branch: gitBranch,
-       // url: gitURL  
-      //  )
+        gitCheckout(
+        branch: gitBranch,
+        url: gitURL  
+        )
      }catch(Exception e) {
          throw new Exception("Unable to checkout from git.")
      }              
@@ -30,7 +30,7 @@ node {
 
    stage('Build') {
        try {
-         //  prepareJar(mvnHome)
+           prepareJar(mvnHome)
        }catch(Exception e) {
            throw new Exception("Unable to build the repo.")
        }
@@ -39,7 +39,7 @@ node {
 
     stage('Sonar-Analysis') { 
         try {
-         //  sonarScan(mvnHome)
+           sonarScan(mvnHome)
        }catch(Exception e) {
            throw new Exception("Sonar scanning failed.")
        }
@@ -49,10 +49,10 @@ node {
 
      //Sonar quality gate for 70% coverage
      stage("Sonar Quality Gate"){
-        // def qualityGateStatus = sonarQualityGate()
-        // if (qualityGateStatus.status != 'OK') {
-          //  throw new Exception("Did not pass sonar quality gate.")
-       // }
+         def qualityGateStatus = sonarQualityGate()
+         if (qualityGateStatus.status != 'OK') {
+            throw new Exception("Did not pass sonar quality gate.")
+        }
       }  
 
 
@@ -87,7 +87,7 @@ node {
     //Prepare docker image and push to docker hub.
     stage('Docker Build and Push to Docker hub'){ 
         try {
-           // createAndPushDockerImage(registryURL, dockerCredentialId, dockerImageAndTag)
+            createAndPushDockerImage(registryURL, dockerCredentialId, dockerImageAndTag)
         }catch(Exception e) {
             throw new Exception("Unable to build docker image.")
         }  
@@ -98,7 +98,7 @@ node {
      stage('Docker Pull and Deploy'){    
       input 'Proceed to deploy?'
       try {
-         // deployUsingDockerCompose()
+          deployUsingDockerCompose()
       }catch(Exception e) {
           throw new Exception("Deployment using docker compose failed.")
       }
@@ -109,7 +109,7 @@ node {
      stage('Deploy Using Ansible'){      
         input 'Proceed to deploy?'
          try {
-           //  deployUsingAnsible()
+             deployUsingAnsible()
         }catch(Exception e) {
           throw new Exception("Deployment using docker compose failed.")
         }      
