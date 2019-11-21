@@ -41,20 +41,36 @@ SonarQube is installed and configured in vm1.
 Artifactory is installed and configured in vm3.
 
 1. **Git** </br>
-    ![Git Configuration](https://octodex.github.com/images/yaktocat.png)
-
+    ![Git Configuration](screenshots/GitConfig.png)
     
 2. **Maven Configuration**
+    ![Maven Plugin Configuration](screenshots/MavenConfiguration.png)
 
 3. **Sonar Configuration**
+![Sonar Server Configuration](screenshots/SonarServerConfiguration.png)
 
 4. **Artifactory Configuration**
+![Artifactory Server Configuration](screenshots/ConfigureJFrogArtifactoryServer.png)
 
-5. **Docker Configuration**
+5. **Docker Configuration** </br>
+Create Docker Hub credentials in Jenkins.  
+Jenkins -> Credentials -> System -> Global credentials -> Add Credentials -> Fill the required details -> OK  
+![Docker Hub Credetial Id Jenkins](screenshots/DockerHubCredentialID.png)
 
-6. **Ansible Configuration**
+6. **Ansible Configuration** </br>
+    Create connection between vm0 and vm2. Mention vm2 in ansible inventory(Edit etc/ansible/hosts).</br> 
+    `[vms]` </br>
+    `dfaos20322dns2.eastus2.cloudapp.azure.com`  
+
+    Check the connection.  
+    `ansible -i hosts -m ping all`
+    ![Ansible Check Connection](screenshots/Ansible-vm0-vm2-connection.png)
 
 7. **Mail Configuration**
+    Install and configure Email Extension plugin.
+    ![Email Configuration1](screenshots/EmailConfiguration1.png)
+
+     ![Email Configuration1](screenshots/EmailConfiguration2.png)
 
 ## Webhooks Creation
 
