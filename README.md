@@ -2,7 +2,7 @@
 
 Clone or fork the sample spring boot [spring-petclinic](https://github.com/spring-projects/spring-petclinic) project which is used to CI CD.
 
-Three VMs have been used for this Hands On:
+Three Linux Ubuntu VMs have been used for this Hands On:
 * dfaos20322dns0.eastus2.cloudapp.azure.com ----> vm0
 * dfaos20322dns1.eastus2.cloudapp.azure.com ----> vm1
 * dfaos20322dns2.eastus2.cloudapp.azure.com ----> vm2
@@ -28,49 +28,52 @@ to the vm2.
 
 6. **Docker Build and Push to Docker hub** : It creates the docker image of spring-petclinic app and push to docker hub.
 
-7. **Docker Pull and Deploy** : Pull image from docker hub and deploy the app to vm0.
+7. **Docker Pull and Deploy** : Pull image from docker hub and deploy the app to vm0 using docker compose.
 
-8. **Deploy Using Ansible** :
+8. **Deploy Using Ansible** : Copy the petclinic artifact from vm0 to vm2 and deploy.
 
-9. **Notify** : Notify user in case of failed/successfull build.
+9. **Notify** : Notify user in case of failed/successful build.
 
 ## Tools and Plugins Configurations in Jenkins
 
 The Jenkins, Docker and Ansible are installed and configured in vm0.
 SonarQube is installed and configured in vm1.
-Artifactory is installed and configured in vm3.
+Artifactory is installed and configured in vm2.
 
-1. **Git** </br>
-    ![Git Configuration](screenshots/GitConfig.png)
+1. **Jenkins Job Configuration** </br>
+
+2. **Shared Library** </br>
+    Create var folder in the repo to store groovy script library.
+
+    Configure Jenkins shared library  
     
-2. **Maven Configuration**
-    ![Maven Plugin Configuration](screenshots/MavenConfiguration.png)
 
-3. **Sonar Configuration**
-![Sonar Server Configuration](screenshots/SonarServerConfiguration.png)
+2. **Git** </br>
+    
+    
+3. **Maven Configuration**
+   
 
-4. **Artifactory Configuration**
-![Artifactory Server Configuration](screenshots/ConfigureJFrogArtifactoryServer.png)
+4. **Sonar Configuration**
 
-5. **Docker Configuration** </br>
+5. **Artifactory Configuration**
+
+
+6. **Docker Configuration** </br>
 Create Docker Hub credentials in Jenkins.  
 Jenkins -> Credentials -> System -> Global credentials -> Add Credentials -> Fill the required details -> OK  
-![Docker Hub Credetial Id Jenkins](screenshots/DockerHubCredentialID.png)
 
-6. **Ansible Configuration** </br>
+7. **Ansible Configuration** </br>
     Create connection between vm0 and vm2. Mention vm2 in ansible inventory(Edit etc/ansible/hosts).</br> 
     `[vms]` </br>
     `dfaos20322dns2.eastus2.cloudapp.azure.com`  
 
     Check the connection.  
-    `ansible -i hosts -m ping all`
-    ![Ansible Check Connection](screenshots/Ansible-vm0-vm2-connection.png)
-
-7. **Mail Configuration**
+    `sudo ansible -i hosts -m ping all`
+   
+8. **Mail Configuration** </br>
     Install and configure Email Extension plugin.
-    ![Email Configuration1](screenshots/EmailConfiguration1.png)
-
-     ![Email Configuration1](screenshots/EmailConfiguration2.png)
+   
 
 ## Webhooks Creation
 
@@ -82,4 +85,29 @@ Jenkins -> Credentials -> System -> Global credentials -> Add Credentials -> Fil
     Open Sonarqube -> Administration -> Webhooks </br>
     Name : `jenkins` </br>
     URL: `http://dfaos20322dns0.eastus2.cloudapp.azure.com:8080/github-webhook/`
+
+## Jenkins Stages Result Logs
+1. **Checkout** </br>
+![Checkout Logs](screenshots/CheckoutResult.png)
+
+2. **Sonar-Analysis** </br>
+![Sonar Scan Result](screenshots/SonarScanResult.png)
+
+3. **Sonar Quality Gate** </br>
+![Sonar Quality Gates Result](screenshots/SonarQualityGateResult.png)
+
+4. **Build** </br>
+![Build Result](screenshots/BuildResult.png)
+
+5. **Artifact upload using Artifactory** </br>
+![Artifactory Upload Result](screenshots/ArtifactoryUploadResult.png)  
+
+![Artifactory Upload Result](screenshots/spring-petclinic-artifactory.png)
+
+6. **Artifact download using Artifactory** </br>
+![Artifactory Upload Result](screenshots/ArtifactoryDownloadResult.png)
+
+7. **Docker Build and Push to Docker hub** </br>
+
+
 
